@@ -333,14 +333,16 @@ class NMF:
     """
     Conduct Nonnegative Matrix Factorization (NMF)
     """
-    def __init__(self, n_components, max_iter=200, tol=1e-4, random_state=None, stopkkt_flag=True,
-    calc_obj=False, calc_pgrad=False, eps=1e-8, l1term=(0.0, 0.0), normal_flag=None):
+    def __init__(self, n_components, max_iter=200, tol=1e-4, init='nndsvd', random_state=None, stopkkt_flag=True, 
+    calc_obj=False, calc_pgrad=False, eps=1e-8, l1term=(0.0, 0.0), normal_flag=None, verbose=False):
         """Create a new instance"""
         self.n_components = n_components
         self.max_iter = max_iter
         self.eps = eps
         self.random_state = random_state
         self.normal_flag = normal_flag
+        self.verbose = verbose
+        self.init = init
 
         # stopkkt
         self.stopkkt_flag = stopkkt_flag
@@ -366,7 +368,13 @@ class NMF:
             self.normal_flag = False
 
         # init
-        U, V = initializeUV_svd(X, self.n_components)
+        if self.init == 'nndsvd':
+            U, V = initializeUV_svd(X, self.n_components)
+        elif self.init == 'random': 
+            U, V = initializeUV(X, self.n_components, self.random_state)
+        else:
+            print("{} is not defined, so 'nndsvd' is selected automatically".format(self.init))
+            U, V = initializeUV_svd(X, self.n_components)
         E = X - np.dot(U, V.T)
 
         if self.calc_obj:
@@ -382,7 +390,8 @@ class NMF:
             try:
                 U, V, E = hals_algorithm(X, U, V, E, self.l1term, self.normal_flag, self.eps)
             except Exception as e:
-                print('Iteration: {}'.format(it))
+                if self.verbose:
+                    print('Iteration: {}'.format(it))
                 raise(e)
 
             if self.calc_obj:
@@ -486,10 +495,10 @@ class PMF(NMF):
     """
     Conduct Positive Matrix Factorization (PMF)
     """
-    def __init__(self, n_components, max_iter=200, tol=1e-4, random_state=None, stopkkt_flag=True, 
-    calc_obj=False, calc_pgrad=False, eps=1e-8, l1term=(0.0, 0.0), normal_flag=None):
-        super().__init__(n_components, max_iter=max_iter, tol=tol, random_state=random_state, stopkkt_flag=stopkkt_flag, 
-        calc_obj=calc_obj, calc_pgrad=calc_pgrad, eps=eps, l1term=l1term, normal_flag=normal_flag)
+    def __init__(self, n_components, max_iter=200, tol=1e-4, init='nndsvd', random_state=None, stopkkt_flag=True, 
+    calc_obj=False, calc_pgrad=False, eps=1e-8, l1term=(0.0, 0.0), normal_flag=None, verbose=False):
+        super().__init__(n_components, max_iter=max_iter, tol=tol, init=init, random_state=random_state, stopkkt_flag=stopkkt_flag, 
+        calc_obj=calc_obj, calc_pgrad=calc_pgrad, eps=eps, l1term=l1term, normal_flag=normal_flag, verbose=verbose)
 
 
     def fit(self, X):
@@ -521,7 +530,8 @@ class PMF(NMF):
             try:
                 U, V, E = pmf_hals_algorithm(X, U, V, E, self.l1term, self.normal_flag, self.eps)
             except Exception as e:
-                print('Iteration: {}'.format(it))
+                if verbose:
+                    print('Iteration: {}'.format(it))
                 raise(e)
 
             if self.calc_obj:
