@@ -2,8 +2,6 @@
 
 Numerical experiments of my master's thesis
 
-Title: Global Convergence of Novel Hierarchical Alternating Least Squares Algorithms for Nonnegative Matrix Factorization
-
 NMF
 ----
 
@@ -28,11 +26,6 @@ Zero division error
 
 - [zero_division_error.ipynb][4]
 
-Speed of NMF and PMF 
---------------------
-
-- [speed.ipynb][5]
-
 [1a]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_olivetti.ipynb
 [1b]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr41.ipynb
 [1c]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr45.ipynb
@@ -44,5 +37,3 @@ Speed of NMF and PMF
 [3]: https://github.com/tsano430/master-thesis/blob/main/julia/comparison.ipynb
 
 [4]: https://github.com/tsano430/master-thesis/blob/main/python/zero_division_error.ipynb
-
-[5]: https://github.com/tsano430/master-thesis/blob/main/julia/speed.ipynb
