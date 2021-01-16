@@ -30,7 +30,7 @@ def objective(X, U, V, E, l1term):
     if E is None:
         E = X - np.dot(U, V.T)
     l1_val = l1term[0] * np.sum(np.abs(U)) + l1term[1] * np.sum(np.abs(V))
-    obj_val = 0.5 * LA.norm(E, 'fro') + l1_val 
+    obj_val = 0.5 * LA.norm(E, 'fro')**2 + l1_val 
     return obj_val
 
 
