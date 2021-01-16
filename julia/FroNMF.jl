@@ -1,3 +1,7 @@
+# FroNMF.jl
+# - Author: Takehiro Sano
+# - License: GNU General Public License v3.0
+
 using LinearAlgebra
 using SparseArrays
 using Random
@@ -36,14 +40,17 @@ function hals_solver(X, _W, _H; delta=1e-9, max_iter=100)
         # Update
         for k in 1:n_components
             R = E + W[:, k] .* H[:, k]'
-            W[:, k] = max.(0.0, R * H[:, k]) / (dot(H[:, k], H[:, k]) + delta)
+            W[:, k] = max.(0.0, R * H[:, k] + delta * W[:, k]) / (dot(H[:, k], H[:, k]) + delta)
             w_nrm = norm(W[:, k])
             if w_nrm > 0.0
                 W[:, k] /= w_nrm
             else
                 W[:, k] = rand(MersenneTwister(1234), row)
+                W[:, k] /= norm(W[:, k])
             end
-            H[:, k] = max.(0.0, R' * W[:, k]) / (dot(W[:, k], W[:, k]) + delta)
+
+            H[:, k] = max.(0.0, R' * W[:, k]) 
+
             E = R - W[:, k] .* H[:, k]'
         end
 
@@ -136,9 +143,10 @@ function gcd_solver(X, _W, _H; delta=1e-9, max_iter=100)
                 W[:, k] /= w_nrm
             else
                 W[:, k] = rand(MersenneTwister(1234), row)
+                W[:, k] /= norm(W[:, k])
             end
         end
-        _gcd_solver(X', H, W, Hnew, PHH, PXH, GH, SH, DH, qH, delta)
+        _gcd_solver(X', H, W, Hnew, PHH, PXH, GH, SH, DH, qH, 0.0)
         E = X - W * H'
         push!(obj_per_time, (time()-start, 0.5 * norm(E)^2))
     end
