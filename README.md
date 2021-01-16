@@ -2,6 +2,8 @@
 
 Numerical experiments of my master's thesis
 
+Title: Global Convergence of Novel Hierarchical Alternating Least Squares Algorithms for Nonnegative Matrix Factorization
+
 NMF
 ----
 
