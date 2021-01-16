@@ -31,16 +31,16 @@ Speed of NMF and PMF
 
 - [speed.ipynb][5]
 
-[1a]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_olivetti.ipynb
-[1b]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_tr41.ipynb
-[1c]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_tr45.ipynb
+[1a]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_olivetti.ipynb
+[1b]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr41.ipynb
+[1c]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr45.ipynb
 
-[2a]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_olivetti_l1.ipynb
-[2b]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_tr41_l1.ipynb
-[2c]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_tr45_l1.ipynb
+[2a]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_olivetti_l1.ipynb
+[2b]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr41_l1.ipynb
+[2c]: https://github.com/tsano430/master-thesis/blob/main/python/simulation_tr45_l1.ipynb
 
-[3]: https://github.com/tsano430/master-thesis/blob/main/gcd/comparison.ipynb
+[3]: https://github.com/tsano430/master-thesis/blob/main/julia/comparison.ipynb
 
-[4]: https://github.com/tsano430/master-thesis/blob/main/hals/zero_division_error.ipynb
+[4]: https://github.com/tsano430/master-thesis/blob/main/python/zero_division_error.ipynb
 
-[5]: https://github.com/tsano430/master-thesis/blob/main/hals/speed.ipynb
+[5]: https://github.com/tsano430/master-thesis/blob/main/julia/speed.ipynb
