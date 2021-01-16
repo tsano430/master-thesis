@@ -29,7 +29,7 @@ Zero division error
 Speed of NMF and PMF 
 --------------------
 
-- [comparison.ipynb][5]
+- [speed.ipynb][5]
 
 [1a]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_olivetti.ipynb
 [1b]: https://github.com/tsano430/master-thesis/blob/main/hals/simulation_tr41.ipynb
@@ -43,4 +43,4 @@ Speed of NMF and PMF
 
 [4]: https://github.com/tsano430/master-thesis/blob/main/hals/zero_division_error.ipynb
 
-[5]: https://github.com/tsano430/master-thesis/blob/main/sparse/comparison.ipynb
+[5]: https://github.com/tsano430/master-thesis/blob/main/hals/speed.ipynb
