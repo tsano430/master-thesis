@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import numpy.linalg as LA
 import warnings
+from tqdm import tqdm
 warnings.simplefilter('error', category=RuntimeWarning)
 
 
@@ -305,8 +306,9 @@ def hals_algorithm(X, _U, _V, _E, l1term, normal_flag, delta=1e-8):
     uvt = np.empty_like(X)
     
     for i in range(dm):
-        np.outer(U[:, i], V[:, i], uvt)
-        R = E + uvt
+        # np.outer(U[:, i], V[:, i], uvt)
+        # R = E + uvt
+        R = E + np.outer(U[:, i], V[:, i])
         
         U[:, i] = np.fmax(0.0, np.dot(R, V[:, i]) + delta * U[:, i] - l1term[0]) / (np.dot(V[:, i], V[:, i]) + delta)
 
@@ -386,7 +388,7 @@ class NMF:
             pgrad = [1.0]
 
         # 
-        for it in range(1, self.max_iter+1):
+        for it in tqdm(range(1, self.max_iter+1)):
             try:
                 U, V, E = hals_algorithm(X, U, V, E, self.l1term, self.normal_flag, self.eps)
             except Exception as e:
