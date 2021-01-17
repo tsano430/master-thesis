@@ -9,7 +9,6 @@ import sys
 import numpy as np
 import numpy.linalg as LA
 import warnings
-from tqdm import tqdm
 warnings.simplefilter('error', category=RuntimeWarning)
 
 
@@ -388,7 +387,7 @@ class NMF:
             pgrad = [1.0]
 
         # 
-        for it in tqdm(range(1, self.max_iter+1)):
+        for it in range(1, self.max_iter+1):
             try:
                 U, V, E = hals_algorithm(X, U, V, E, self.l1term, self.normal_flag, self.eps)
             except Exception as e:
