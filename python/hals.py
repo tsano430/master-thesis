@@ -514,7 +514,13 @@ class PMF(NMF):
             self.normal_flag = False
 
         # init
-        U, V = initializeUV_svd(X, self.n_components)
+        if self.init == 'nndsvd':
+            U, V = initializeUV_svd(X, self.n_components)
+        elif self.init == 'random': 
+            U, V = initializeUV(X, self.n_components, self.random_state)
+        else:
+            print("{} is not defined, so 'nndsvd' is selected automatically".format(self.init))
+            U, V = initializeUV_svd(X, self.n_components)
         U = np.fmax(self.eps, U)
         V = np.fmax(self.eps, V)
         E = X - np.dot(U, V.T)
