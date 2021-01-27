@@ -66,7 +66,7 @@ function _gcd_solver(X, W, H, Wnew, P, Z, G, S, D, q, delta)
     mul!(P, H', H)
     mul!(Z, X, H) 
     mul!(G, W, P)
-    G = G .- Z 
+    G .-= Z 
 
     for r in 1:n_components
         for i in 1:n_samples
@@ -77,7 +77,16 @@ function _gcd_solver(X, W, H, Wnew, P, Z, G, S, D, q, delta)
 
     p_init = -1.0
     for i in 1:n_samples
-        qi = argmax(D[i, :])
+        # qi = argmax(D[i, :])
+        qi = 1
+        maxv = D[i, 1]
+        for r in 2:n_components
+            if D[i, r] > maxv
+                qi = r
+                maxv = D[i, r]
+            end
+        end
+
         q[i] = qi
         p_init = max(p_init, D[i, qi])
     end
@@ -86,23 +95,34 @@ function _gcd_solver(X, W, H, Wnew, P, Z, G, S, D, q, delta)
     nu = 0.001
 
     for i in 1:n_samples
+        qi = q[i] 
         for _ in 1:n_components^2
-            qi = q[i]
             if D[i, qi] < nu * p_init
                 break
             end
 
-            s = S[i, qi]
-            Wnew[i, qi] += s
-            G[i, :] = G[i, :] .+ (s .* P[qi, :])
+            Wnew[i, qi] += S[i, qi]
+
+            for r in 1:n_components
+                G[i, r] += S[i, qi] * P[qi, r]
+            end
 
             for r in 1:n_components
                 S[i, r] = max(0.0, W[i, r] - G[i, r] / (delta + P[r, r])) - W[i, r]
                 D[i, r] = - G[i, r] * S[i, r] - 0.5 * P[r, r] * S[i, r]^2
             end
 
-            q[i] = argmax(D[i, :])
+            # qi = argmax(D[i, :])
+            qi = 1
+            maxv = D[i, 1]
+            for r in 2:n_components
+                if D[i, r] > maxv
+                    qi = r
+                    maxv = D[i, r]
+                end
+            end
         end
+        q[i] = qi
     end
     copyto!(W, W + Wnew)
     W = max.(0.0, W)
@@ -123,7 +143,7 @@ function gcd_solver(X, _W, _H; delta=1e-9, max_iter=100)
     GW = zeros(row, n_components)
     SW = zeros(row, n_components)
     DW = zeros(row, n_components)
-    qW = Array{Int}(undef, row)
+    qW = Vector{Int}(undef, row)
     #
     Hnew = zeros(col, n_components)
     PHH = zeros(n_components, n_components)
@@ -131,7 +151,7 @@ function gcd_solver(X, _W, _H; delta=1e-9, max_iter=100)
     GH = zeros(col, n_components)
     SH = zeros(col, n_components)
     DH = zeros(col, n_components)
-    qH = Array{Int}(undef, col)
+    qH = Vector{Int}(undef, col)
 
     for _ in 1:max_iter
         # Update
